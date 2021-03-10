@@ -2,6 +2,7 @@ PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 DOCKER_IMAGE ?= lambci/lambda-base-2:build
 TARGET ?=/opt/
+IMAGEMAGICK_VERSION ?= 7.0.11-2
 
 MOUNTS = -v $(PROJECT_ROOT):/var/task \
 	-v $(PROJECT_ROOT)result:$(TARGET)
@@ -20,7 +21,7 @@ bash:
 	$(DOCKER) $(MOUNTS) --entrypoint /bin/bash -t $(DOCKER_IMAGE)
 
 all libs:
-	$(DOCKER) $(MOUNTS) --entrypoint /usr/bin/make -t $(DOCKER_IMAGE) TARGET_DIR=$(TARGET) -f ../Makefile_ImageMagick $@
+	$(DOCKER) $(MOUNTS) --entrypoint /usr/bin/make -t $(DOCKER_IMAGE) TARGET_DIR=$(TARGET) IMAGEMAGICK_VERSION=$(IMAGEMAGICK_VERSION) -f ../Makefile_ImageMagick $@
 
 
 STACK_NAME ?= imagemagick-layer
